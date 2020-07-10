@@ -16,6 +16,7 @@ type
     FTargetWindow : THandle;
     function GetLeft: integer;
     function GetTop: integer;
+    function GetCanCapture: boolean;
   public
     WithCursor : boolean;
     procedure Init;
@@ -23,6 +24,7 @@ type
     procedure SetFullScreen;
     procedure SetTargetWindow(const Value: THandle);
   public
+    property CanCapture : boolean read GetCanCapture;
     property ScreenSource : TScreenSource read FScreenSource;
     property Left : integer read GetLeft;
     property Top : integer read GetTop;
@@ -63,6 +65,11 @@ type
 implementation
 
 { TScreenOption }
+
+function TScreenOption.GetCanCapture: boolean;
+begin
+  Result := not ((FScreenSource = ssWindow) and (FTargetWindow = 0));
+end;
 
 function TScreenOption.GetLeft: integer;
 var

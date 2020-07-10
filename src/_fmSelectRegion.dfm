@@ -7,7 +7,7 @@ object fmSelectRegion: TfmSelectRegion
   Caption = 'fmSelectRegion'
   ClientHeight = 600
   ClientWidth = 800
-  Color = clBtnFace
+  Color = clBlack
   Constraints.MinHeight = 320
   Constraints.MinWidth = 240
   Font.Charset = DEFAULT_CHARSET
@@ -1404,10 +1404,17 @@ object fmSelectRegion: TfmSelectRegion
       OnMouseDown = plInfoMouseDown
     end
   end
-  object Timer: TTimer
+  object tmInfo: TTimer
     Interval = 100
-    OnTimer = TimerTimer
-    Left = 388
-    Top = 288
+    OnTimer = tmInfoTimer
+    Left = 260
+    Top = 280
+  end
+  object tmBlink: TTimer
+    Enabled = False
+    Interval = 500
+    OnTimer = tmBlinkTimer
+    Left = 260
+    Top = 352
   end
 end

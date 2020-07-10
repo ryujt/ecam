@@ -55,14 +55,25 @@ end;
 procedure TfmMain.btRecordChanged(Sender: TObject);
 begin
   if btRecord.SwitchOn then begin
-    // TODO:
-  end else begin
-    //
+    if TOptions.Obj.ScreenOption.CanCapture = false then begin
+      MessageDlg('캡쳐할 윈도우가 선택되지 않았습니다.', mtError, [mbOK], 0);
+      btRecord.SwitchOn := false;
+      TCore.Obj.View.sp_ShowOptionControl('Monitor');
+      TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
+      Exit;
+    end;
   end;
+
+  btMonitor.SwitchOn := false;
+  btMic.SwitchOn     := false;
+  btSetup.SwitchOn   := false;
 
   btMonitor.Enabled := not btRecord.SwitchOn;
   btMic.Enabled     := not btRecord.SwitchOn;
   btSetup.Enabled   := not btRecord.SwitchOn;
+
+  TCore.Obj.View.sp_ShowOptionControl('');
+  TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
 end;
 
 constructor TfmMain.Create(AOwner: TComponent);
@@ -86,15 +97,15 @@ end;
 
 procedure TfmMain.rp_ShowOptionControl(AParams: TJsonData);
 begin
-  if AParams.Values['Target'] = '' then btMonitor.SwitchOn := false;
+  btMonitor.SwitchOn := AParams.Values['Target'] = 'Monitor';
+  btMic.SwitchOn     := AParams.Values['Target'] = 'Mic';
+  btSetup.SwitchOn   := AParams.Values['Target'] = 'Setup';
 end;
 
 procedure TfmMain.SwitchButtonbtClick(Sender: TObject);
 var
   SwitchButton : TSwitchButton absolute Sender;
 begin
-  if btRecord.SwitchOn then Exit;
-
   if Sender <> btMonitor then btMonitor.SwitchOn := false;
   if Sender <> btMic     then btMic.SwitchOn     := false;
   if Sender <> btSetup   then btSetup.SwitchOn   := false;
@@ -107,6 +118,4 @@ begin
 end;
 
 end.
-
-
 

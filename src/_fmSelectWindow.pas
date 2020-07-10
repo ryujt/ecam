@@ -76,7 +76,10 @@ end;
 procedure TfmSelectWindow.FormKeyDown(Sender: TObject; var Key: Word;
   Shift: TShiftState);
 begin
-  if Key = VK_ESCAPE then Close;
+  if Key = VK_ESCAPE then begin
+    TCore.Obj.View.sp_SetFullScreen;
+    Close;
+  end;
 end;
 
 procedure TfmSelectWindow.rp_SetSelectWindowVisible(AParams: TJsonData);

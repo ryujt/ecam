@@ -12,11 +12,13 @@ type
     BitmapWindow: TBitmapWindow;
     plClient: TPanel;
     plInfo: TPanel;
-    Timer: TTimer;
+    tmInfo: TTimer;
+    tmBlink: TTimer;
     procedure FormResize(Sender: TObject);
     procedure plInfoMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
-    procedure TimerTimer(Sender: TObject);
+    procedure tmInfoTimer(Sender: TObject);
+    procedure tmBlinkTimer(Sender: TObject);
   private
     procedure create_hole;
     procedure remove_Hole;
@@ -24,6 +26,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
+    procedure rp_OnAir(AParams:TJsonData);
     procedure rp_ShowOptionControl(AParams:TJsonData);
     procedure rp_SetSelectRegionVisible(AParams:TJsonData);
   end;
@@ -71,9 +74,8 @@ begin
     plInfo.Top  + plInfo.Height
   );
 
-  if CombineRgn(hDelete, hDelete, hInfo, RGN_XOR) = ERROR then Exit;
-  if CombineRgn(hResult, hRect, hDelete, RGN_XOR) = ERROR then Exit;
-
+  if plInfo.Visible then CombineRgn(hDelete, hDelete, hInfo, RGN_XOR);
+  CombineRgn(hResult, hRect, hDelete, RGN_XOR);
   SetWindowRgn(Handle, hResult, True);
 end;
 
@@ -101,14 +103,18 @@ begin
 
 end;
 
+procedure TfmSelectRegion.rp_OnAir(AParams: TJsonData);
+begin
+  plInfo.Visible := not AParams.Booleans['IsOnAir'];
+  create_hole;
+  tmBlink.Enabled := AParams.Booleans['IsOnAir'];
+  if AParams.Booleans['IsOnAir'] = false then BitmapWindow.Visible := true;
+end;
+
 procedure TfmSelectRegion.rp_SetSelectRegionVisible(AParams: TJsonData);
 begin
   Visible := AParams.Booleans['Visible'];
-end;
-
-procedure TfmSelectRegion.rp_ShowOptionControl(AParams: TJsonData);
-begin
-  if AParams.Values['Target'] = '' then begin
+  if Visible then begin
     TOptions.Obj.ScreenOption.SetScreenRegion(
       Left + plClient.Left,
       Top  + plClient.Top,
@@ -118,7 +124,24 @@ begin
   end;
 end;
 
-procedure TfmSelectRegion.TimerTimer(Sender: TObject);
+procedure TfmSelectRegion.rp_ShowOptionControl(AParams: TJsonData);
+begin
+  if Visible and (AParams.Values['Target'] = '') then begin
+    TOptions.Obj.ScreenOption.SetScreenRegion(
+      Left + plClient.Left,
+      Top  + plClient.Top,
+      plClient.Width,
+      plClient.Height
+    );
+  end;
+end;
+
+procedure TfmSelectRegion.tmBlinkTimer(Sender: TObject);
+begin
+  BitmapWindow.Visible := not BitmapWindow.Visible;
+end;
+
+procedure TfmSelectRegion.tmInfoTimer(Sender: TObject);
 begin
   plInfo.Caption := Format('(%d, %d) - %d X %d', [Left + plClient.Left, Top + plClient.Top, plClient.Width, plClient.Height]);
 end;

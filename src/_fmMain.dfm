@@ -1947,7 +1947,6 @@ object fmMain: TfmMain
         Hint = #45433#54868' '#49884#51089
         HelpType = htKeyword
         ShowHint = True
-        OnClick = SwitchButtonbtClick
         Bitmap.Data = {
           36600000424D3660000000000000360000002800000080000000400000000100
           1800000000000060000000000000000000000000000000000000FFFFFFFFFFFF

@@ -44,8 +44,14 @@ type
     procedure sp_Terminate(AMsg:string);
 
     procedure sp_ShowOptionControl(ATarget:string);
+
     procedure sp_SetSelectRegionVisible(AVisible:boolean);
+
     procedure sp_SetSelectWindowVisible(AVisible:boolean);
+
+    procedure sp_OnAir(AValue:boolean);
+
+    procedure sp_SetFullScreen;
 published
     /// 메시지 전송 중인 가?
     property Active : boolean read GetActive write SetActive;  
@@ -114,6 +120,35 @@ begin
   Params := TJsonData.Create;
   try
     Params.Values['Code'] := 'Initialize';
+    FObserverList.AsyncBroadcast(Params);
+  finally
+    Params.Free;
+  end;
+end;
+
+procedure TView.sp_OnAir(AValue: boolean);
+var
+  Params : TJsonData;
+begin
+  Params := TJsonData.Create;
+  try
+    Params.Values['Code'] := 'OnAir';
+    Params.Booleans['IsOnAir'] := AValue;
+
+    FObserverList.AsyncBroadcast(Params);
+  finally
+    Params.Free;
+  end;
+end;
+
+procedure TView.sp_SetFullScreen;
+var
+  Params : TJsonData;
+begin
+  Params := TJsonData.Create;
+  try
+    Params.Values['Code'] := 'SetFullScreen';
+
     FObserverList.AsyncBroadcast(Params);
   finally
     Params.Free;

@@ -25,6 +25,7 @@ type
     destructor Destroy; override;
   published
     procedure rp_ShowOptionControl(AParams:TJsonData);
+    procedure rp_SetFullScreen(AParams:TJsonData);
   end;
 
 implementation
@@ -56,6 +57,12 @@ begin
   TCore.Obj.View.sp_SetSelectWindowVisible(rbWindow.Checked);
 
   if rbFull.Checked then TOptions.Obj.ScreenOption.SetFullScreen;
+end;
+
+procedure TfrMonitor.rp_SetFullScreen(AParams: TJsonData);
+begin
+  rbFull.Checked := true;
+  TOptions.Obj.ScreenOption.SetFullScreen;
 end;
 
 procedure TfrMonitor.rp_ShowOptionControl(AParams: TJsonData);
