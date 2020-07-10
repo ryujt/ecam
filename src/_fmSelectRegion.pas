@@ -12,9 +12,11 @@ type
     BitmapWindow: TBitmapWindow;
     plClient: TPanel;
     plInfo: TPanel;
+    Timer: TTimer;
     procedure FormResize(Sender: TObject);
     procedure plInfoMouseDown(Sender: TObject; Button: TMouseButton;
       Shift: TShiftState; X, Y: Integer);
+    procedure TimerTimer(Sender: TObject);
   private
     procedure create_hole;
     procedure remove_Hole;
@@ -101,6 +103,11 @@ end;
 procedure TfmSelectRegion.rp_SetSelectRegionVisible(AParams: TJsonData);
 begin
   Visible := AParams.Booleans['Visible'];
+end;
+
+procedure TfmSelectRegion.TimerTimer(Sender: TObject);
+begin
+  plInfo.Caption := Format('(%d, %d) - %d X %d', [Left + plClient.Left, Top + plClient.Top, plClient.Width, plClient.Height]);
 end;
 
 end.

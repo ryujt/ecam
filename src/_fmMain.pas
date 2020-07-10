@@ -93,10 +93,11 @@ begin
   if Sender <> btMic     then btMic.SwitchOn     := false;
   if Sender <> btSetup   then btSetup.SwitchOn   := false;
 
-  if not SwitchButton.SwitchOn then
+  if not SwitchButton.SwitchOn then begin
     TCore.Obj.View.sp_ShowOptionControl(SwitchButton.HelpKeyword)
-  else
+  end else begin
     TCore.Obj.View.sp_ShowOptionControl('');
+  end;
 end;
 
 end.

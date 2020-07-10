@@ -9,7 +9,7 @@ uses
   Vcl.ExtCtrls, Vcl.Imaging.pngimage, Vcl.StdCtrls;
 
 type
-  TfrMonitor = class(TFrame, IFrameBase)
+  TfrMonitor = class(TFrame)
     Image: TImage;
     Label1: TLabel;
     Label2: TLabel;
@@ -20,9 +20,6 @@ type
     Label4: TLabel;
     procedure SelectCaptureSource(Sender: TObject);
   private
-    procedure BeforeShow;
-    procedure AfterShow;
-    procedure BeforeClose;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -38,21 +35,6 @@ uses
 {$R *.dfm}
 
 { TfrMonitor }
-
-procedure TfrMonitor.AfterShow;
-begin
-
-end;
-
-procedure TfrMonitor.BeforeShow;
-begin
-
-end;
-
-procedure TfrMonitor.BeforeClose;
-begin
-
-end;
 
 constructor TfrMonitor.Create(AOwner: TComponent);
 begin
@@ -76,7 +58,6 @@ end;
 
 procedure TfrMonitor.rp_ShowOptionControl(AParams: TJsonData);
 begin
-  rbFull.Checked := true;
   Visible := AParams.Values['Target'] = HelpKeyword;
 end;
 

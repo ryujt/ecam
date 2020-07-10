@@ -9,12 +9,11 @@ uses
   Vcl.ExtCtrls, Vcl.StdCtrls;
 
 type
-  TfrSetup = class(TFrame, IFrameBase)
+  TfrSetup = class(TFrame)
     Label1: TLabel;
+    cbYouTube: TCheckBox;
+    edStreamKey: TEdit;
   private
-    procedure BeforeShow;
-    procedure AfterShow;
-    procedure BeforeClose;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -30,21 +29,6 @@ uses
 {$R *.dfm}
 
 { TfrSetup }
-
-procedure TfrSetup.AfterShow;
-begin
-
-end;
-
-procedure TfrSetup.BeforeShow;
-begin
-
-end;
-
-procedure TfrSetup.BeforeClose;
-begin
-
-end;
 
 constructor TfrSetup.Create(AOwner: TComponent);
 begin
