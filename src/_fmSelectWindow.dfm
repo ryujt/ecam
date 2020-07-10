@@ -11,8 +11,10 @@ object fmSelectWindow: TfmSelectWindow
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
+  KeyPreview = True
   OldCreateOrder = False
   OnDeactivate = FormDeactivate
+  OnKeyDown = FormKeyDown
   DesignSize = (
     320
     240)

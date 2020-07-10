@@ -29,7 +29,7 @@ var
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 

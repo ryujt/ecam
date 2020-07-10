@@ -13,6 +13,7 @@ type
     Timer: TTimer;
     procedure TimerTimer(Sender: TObject);
     procedure FormDeactivate(Sender: TObject);
+    procedure FormKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
   private
     procedure create_hole;
   public
@@ -28,7 +29,7 @@ var
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
@@ -72,10 +73,17 @@ begin
   Close;
 end;
 
+procedure TfmSelectWindow.FormKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  if Key = VK_ESCAPE then Close;
+end;
+
 procedure TfmSelectWindow.rp_SetSelectWindowVisible(AParams: TJsonData);
 begin
   Visible := AParams.Booleans['Visible'];
   Timer.Enabled := AParams.Booleans['Visible'];
+  if Visible then TOptions.Obj.ScreenOption.SetTargetWindow(0);
 end;
 
 procedure TfmSelectWindow.TimerTimer(Sender: TObject);
@@ -85,7 +93,7 @@ var
   WindowRect : TRect;
 begin
   if Visible = false then Exit;
-  
+
   GetCursorPos(c_pos);
   target_window := WindowFromPoint(c_pos);
   if target_window = 0 then Exit;
@@ -104,6 +112,7 @@ begin
     Timer.Enabled := false;
     Close;
     TCore.Obj.View.sp_ShowOptionControl('');
+    TOptions.Obj.ScreenOption.SetTargetWindow(target_window);
   end;
 end;
 

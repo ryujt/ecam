@@ -10,7 +10,8 @@ uses
   _frMic in '_frMic.pas' {frMic: TFrame},
   _frSetup in '_frSetup.pas' {frSetup: TFrame},
   _fmSelectRegion in '_fmSelectRegion.pas' {fmSelectRegion},
-  _fmSelectWindow in '_fmSelectWindow.pas' {fmSelectWindow};
+  _fmSelectWindow in '_fmSelectWindow.pas' {fmSelectWindow},
+  Options in 'Core\Options.pas';
 
 {$R *.res}
 

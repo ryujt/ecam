@@ -30,7 +30,7 @@ type
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
@@ -54,6 +54,8 @@ procedure TfrMonitor.SelectCaptureSource(Sender: TObject);
 begin
   TCore.Obj.View.sp_SetSelectRegionVisible(rbRegion.Checked);
   TCore.Obj.View.sp_SetSelectWindowVisible(rbWindow.Checked);
+
+  if rbFull.Checked then TOptions.Obj.ScreenOption.SetFullScreen;
 end;
 
 procedure TfrMonitor.rp_ShowOptionControl(AParams: TJsonData);

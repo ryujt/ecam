@@ -24,6 +24,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
+    procedure rp_ShowOptionControl(AParams:TJsonData);
     procedure rp_SetSelectRegionVisible(AParams:TJsonData);
   end;
 
@@ -33,7 +34,7 @@ var
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
@@ -103,6 +104,18 @@ end;
 procedure TfmSelectRegion.rp_SetSelectRegionVisible(AParams: TJsonData);
 begin
   Visible := AParams.Booleans['Visible'];
+end;
+
+procedure TfmSelectRegion.rp_ShowOptionControl(AParams: TJsonData);
+begin
+  if AParams.Values['Target'] = '' then begin
+    TOptions.Obj.ScreenOption.SetScreenRegion(
+      Left + plClient.Left,
+      Top  + plClient.Top,
+      plClient.Width,
+      plClient.Height
+    );
+  end;
 end;
 
 procedure TfmSelectRegion.TimerTimer(Sender: TObject);

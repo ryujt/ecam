@@ -1419,8 +1419,6 @@ object fmOptions: TfmOptions
         Align = alClient
         TabOrder = 2
         Visible = False
-        ExplicitWidth = 310
-        ExplicitHeight = 230
       end
     end
   end

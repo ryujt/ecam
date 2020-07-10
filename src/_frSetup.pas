@@ -13,6 +13,9 @@ type
     Label1: TLabel;
     cbYouTube: TCheckBox;
     edStreamKey: TEdit;
+    procedure edStreamKeyKeyUp(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
+    procedure cbYouTubeClick(Sender: TObject);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -24,11 +27,16 @@ type
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
 { TfrSetup }
+
+procedure TfrSetup.cbYouTubeClick(Sender: TObject);
+begin
+  TOptions.Obj.YouTubeOption.OnAir := cbYouTube.Checked;
+end;
 
 constructor TfrSetup.Create(AOwner: TComponent);
 begin
@@ -42,6 +50,12 @@ begin
   TCore.Obj.View.Remove(Self);
 
   inherited;
+end;
+
+procedure TfrSetup.edStreamKeyKeyUp(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+begin
+  TOptions.Obj.YouTubeOption.StreamKey := edStreamKey.Text;
 end;
 
 procedure TfrSetup.rp_ShowOptionControl(AParams: TJsonData);

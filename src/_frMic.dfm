@@ -20,6 +20,7 @@ object frMic: TfrMic
     Height = 17
     Caption = '  '#49884#49828#53596' '#50724#46356#50724' '#52897#52432
     TabOrder = 0
+    OnClick = cbSystemAudioClick
   end
   object cbMic: TComboBox
     Left = 24
@@ -28,6 +29,7 @@ object frMic: TfrMic
     Height = 21
     TabOrder = 1
     Text = #44592#48376' '#51109#52824
+    OnChange = cbMicChange
     OnDropDown = cbMicDropDown
     OnKeyDown = cbMicKeyDown
     OnKeyPress = cbMicKeyPress

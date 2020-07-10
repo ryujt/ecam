@@ -23,6 +23,7 @@ type
     procedure btRecordChanged(Sender: TObject);
     procedure SwitchButtonbtClick(Sender: TObject);
     procedure btHomeClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -37,7 +38,7 @@ var
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
@@ -76,6 +77,11 @@ begin
   TCore.Obj.View.Remove(Self);
 
   inherited;
+end;
+
+procedure TfmMain.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+  TOptions.Obj.SaveToFile;
 end;
 
 procedure TfmMain.rp_ShowOptionControl(AParams: TJsonData);

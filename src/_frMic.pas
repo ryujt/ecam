@@ -16,6 +16,8 @@ type
     procedure cbMicKeyDown(Sender: TObject; var Key: Word; Shift: TShiftState);
     procedure cbMicKeyPress(Sender: TObject; var Key: Char);
     procedure cbMicDropDown(Sender: TObject);
+    procedure cbSystemAudioClick(Sender: TObject);
+    procedure cbMicChange(Sender: TObject);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -27,7 +29,7 @@ type
 implementation
 
 uses
-  Core;
+  Core, Options;
 
 {$R *.dfm}
 
@@ -54,6 +56,15 @@ begin
       Result := true;
       Exit;
     end;
+end;
+
+procedure TfrMic.cbMicChange(Sender: TObject);
+begin
+  TOptions.Obj.AudioOption.Mic := -1;
+
+  if cbMic.ItemIndex > -1 then begin
+    TOptions.Obj.AudioOption.Mic := Integer(cbMic.Items.Objects[cbMic.ItemIndex]);
+  end;
 end;
 
 procedure TfrMic.cbMicDropDown(Sender: TObject);
@@ -85,6 +96,11 @@ end;
 procedure TfrMic.cbMicKeyPress(Sender: TObject; var Key: Char);
 begin
   Key := #0;
+end;
+
+procedure TfrMic.cbSystemAudioClick(Sender: TObject);
+begin
+  TOptions.Obj.AudioOption.SystemAudio := cbSystemAudio.Checked;
 end;
 
 constructor TfrMic.Create(AOwner: TComponent);

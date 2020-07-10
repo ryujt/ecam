@@ -20,6 +20,7 @@ object frSetup: TfrSetup
     Height = 17
     Caption = '  '#50976#53916#48652#47196' '#48169#49569#54616#44592
     TabOrder = 0
+    OnClick = cbYouTubeClick
   end
   object edStreamKey: TEdit
     Left = 24
@@ -27,5 +28,6 @@ object frSetup: TfrSetup
     Width = 257
     Height = 21
     TabOrder = 1
+    OnKeyUp = edStreamKeyKeyUp
   end
 end
