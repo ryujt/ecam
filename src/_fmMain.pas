@@ -48,13 +48,13 @@ end;
 
 procedure TfmMain.btHomeClick(Sender: TObject);
 begin
-  ShellExecuteFile('http://www.10bun.tv', '', '')
+  ShellExecuteFile('http://e-cam.s3-website.ap-northeast-2.amazonaws.com/', '', '')
 end;
 
 procedure TfmMain.btRecordChanged(Sender: TObject);
 begin
   if btRecord.SwitchOn then begin
-    //
+    // TODO:
   end else begin
     //
   end;

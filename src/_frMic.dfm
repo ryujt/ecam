@@ -24,10 +24,11 @@ object frMic: TfrMic
   object cbMic: TComboBox
     Left = 24
     Top = 76
-    Width = 185
+    Width = 257
     Height = 21
     TabOrder = 1
     Text = #44592#48376' '#51109#52824
+    OnDropDown = cbMicDropDown
     OnKeyDown = cbMicKeyDown
     OnKeyPress = cbMicKeyPress
   end
