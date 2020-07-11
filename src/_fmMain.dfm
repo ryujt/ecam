@@ -5091,4 +5091,10 @@ object fmMain: TfmMain
       end
     end
   end
+  object SaveDialog: TSaveDialog
+    DefaultExt = '.mp4'
+    Filter = 'mp4|*.mp4'
+    Left = 92
+    Top = 48
+  end
 end

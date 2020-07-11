@@ -19,12 +19,14 @@ type
     btMonitor: TSwitchButton;
     btMic: TSwitchButton;
     btSetup: TSwitchButton;
+    SaveDialog: TSaveDialog;
     procedure btCloseClick(Sender: TObject);
     procedure btRecordChanged(Sender: TObject);
     procedure SwitchButtonbtClick(Sender: TObject);
     procedure btHomeClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
+    procedure do_close_ffmpeg;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -71,7 +73,7 @@ begin
 
     ShellExecuteHide(GetExecPath+'ffmpeg.exe', TOptions.Obj.FFmpegExecuteParams, GetExecPath);
   end else begin
-    close_ffmpeg;
+    do_close_ffmpeg;
   end;
 
   btMonitor.SwitchOn := false;
@@ -99,6 +101,18 @@ begin
   inherited;
 end;
 
+procedure TfmMain.do_close_ffmpeg;
+begin
+  close_ffmpeg;
+  if TOptions.Obj.YouTubeOption.OnAir then Exit;
+
+  if SaveDialog.Execute then begin
+    MoveFileEx(PChar(TOptions.Obj.VideoFilename), PChar(SaveDialog.FileName), MOVEFILE_COPY_ALLOWED or MOVEFILE_REPLACE_EXISTING);
+  end else begin
+    DeleteFile(TOptions.Obj.VideoFilename)
+  end;
+end;
+
 procedure TfmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 var
   result : integer;
@@ -110,7 +124,7 @@ begin
       Exit;
     end;
 
-    close_ffmpeg;
+    do_close_ffmpeg;
   end;
 
   TOptions.Obj.SaveToFile;
