@@ -135,7 +135,7 @@ begin
     Params.Values['Code'] := 'OnAir';
     Params.Booleans['IsOnAir'] := AValue;
 
-    FObserverList.AsyncBroadcast(Params);
+    FObserverList.Broadcast(Params);
   finally
     Params.Free;
   end;

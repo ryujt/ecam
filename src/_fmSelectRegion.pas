@@ -108,7 +108,18 @@ begin
   plInfo.Visible := not AParams.Booleans['IsOnAir'];
   create_hole;
   tmBlink.Enabled := AParams.Booleans['IsOnAir'];
-  if AParams.Booleans['IsOnAir'] = false then BitmapWindow.Visible := true;
+
+  if AParams.Booleans['IsOnAir'] then begin
+    if Visible then
+      TOptions.Obj.ScreenOption.SetScreenRegion(
+        Left + plClient.Left,
+        Top  + plClient.Top,
+        plClient.Width,
+        plClient.Height
+      );
+  end else begin
+    BitmapWindow.Visible := true;
+  end;
 end;
 
 procedure TfmSelectRegion.rp_SetSelectRegionVisible(AParams: TJsonData);

@@ -54,12 +54,13 @@ end;
 
 procedure TfmMain.btRecordChanged(Sender: TObject);
 begin
+  TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
+
   if btRecord.SwitchOn then begin
     if TOptions.Obj.ScreenOption.CanCapture = false then begin
       MessageDlg('캡쳐할 윈도우가 선택되지 않았습니다.', mtError, [mbOK], 0);
       btRecord.SwitchOn := false;
       TCore.Obj.View.sp_ShowOptionControl('Monitor');
-      TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
       Exit;
     end;
 
@@ -82,7 +83,6 @@ begin
   btSetup.Enabled   := not btRecord.SwitchOn;
 
   TCore.Obj.View.sp_ShowOptionControl('');
-  TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
 end;
 
 constructor TfmMain.Create(AOwner: TComponent);
@@ -100,9 +100,16 @@ begin
 end;
 
 procedure TfmMain.FormClose(Sender: TObject; var Action: TCloseAction);
+var
+  result : integer;
 begin
   if btRecord.SwitchOn then begin
-    // TODO:
+    result := MessageDlg('녹화중입니다. 종료하시겠습니까?', mtConfirmation, [mbYes, mbNo], 0);
+    if result <> mrYes then begin
+      Action := caNone;
+      Exit;
+    end;
+
     close_ffmpeg;
   end;
 
