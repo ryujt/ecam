@@ -3,7 +3,7 @@ unit _fmMain;
 interface
 
 uses
-  JsonData, Magnetic, Disk,
+  JsonData, Magnetic, Disk, FFmpegController,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BitmapButton,
   Vcl.StdCtrls, BitmapWindow, SwitchButton;
@@ -62,6 +62,15 @@ begin
       TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
       Exit;
     end;
+
+    if open_ffmpeg(TOptions.Obj.FFmpegControllerParams) = false then begin
+      MessageDlg('녹화 준비 도중 에러가 발생하였습니다.', mtError, [mbOK], 0);
+      Exit;
+    end;
+
+    ShellExecuteHide(GetExecPath+'ffmpeg.exe', TOptions.Obj.FFmpegExecuteParams, GetExecPath);
+  end else begin
+    close_ffmpeg;
   end;
 
   btMonitor.SwitchOn := false;
@@ -92,6 +101,11 @@ end;
 
 procedure TfmMain.FormClose(Sender: TObject; var Action: TCloseAction);
 begin
+  if btRecord.SwitchOn then begin
+    // TODO:
+    close_ffmpeg;
+  end;
+
   TOptions.Obj.SaveToFile;
 end;
 
