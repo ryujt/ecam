@@ -231,12 +231,19 @@ end;
 
 function TOptions.GetFFmpegExecuteParams: string;
 const
-  fmt : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s %s';
+  fmt_live : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s -f flv rtmp://a.rtmp.youtube.com/live2/%s';
+  fmt_file : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s %s';
 begin
-  FVideoFilename := RandomStr(16) + '.mp4';
-  Result := Format(fmt,
-    [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, FVideoFilename]
-  );
+  if YouTubeOption.OnAir then begin
+    Result := Format(fmt_live,
+      [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, YouTubeOption.StreamKey]
+    );
+  end else begin
+    FVideoFilename := RandomStr(16) + '.mp4';
+    Result := Format(fmt_file,
+      [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, FVideoFilename]
+    );
+  end;
 end;
 
 initialization

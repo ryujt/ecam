@@ -5,8 +5,8 @@ object fmSelectRegion: TfmSelectRegion
   AlphaBlendValue = 200
   BorderStyle = bsNone
   Caption = 'fmSelectRegion'
-  ClientHeight = 600
-  ClientWidth = 800
+  ClientHeight = 730
+  ClientWidth = 1290
   Color = clBlack
   Constraints.MinHeight = 320
   Constraints.MinWidth = 240
@@ -23,8 +23,8 @@ object fmSelectRegion: TfmSelectRegion
   object BitmapWindow: TBitmapWindow
     Left = 0
     Top = 0
-    Width = 800
-    Height = 600
+    Width = 1290
+    Height = 730
     Align = alClient
     Bitmap.Data = {
       F6A80000424DF6A8000000000000360000002800000078000000780000000100
@@ -1380,19 +1380,23 @@ object fmSelectRegion: TfmSelectRegion
       6464646464646464646464646464646464646464646464646464646464646464
       6464646464646464646464646464646464646464646464646464}
     ActiveMouse = True
+    ExplicitWidth = 800
+    ExplicitHeight = 600
     DesignSize = (
-      800
-      600)
+      1290
+      730)
     object plClient: TPanel
       Left = 5
       Top = 5
-      Width = 790
-      Height = 590
+      Width = 1280
+      Height = 720
       Anchors = [akLeft, akTop, akRight, akBottom]
       BevelOuter = bvNone
       Color = clWhite
       ParentBackground = False
       TabOrder = 0
+      ExplicitWidth = 790
+      ExplicitHeight = 590
     end
     object plInfo: TPanel
       Left = 304
