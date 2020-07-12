@@ -13,9 +13,12 @@ type
     Label1: TLabel;
     cbYouTube: TCheckBox;
     edStreamKey: TEdit;
+    Bevel1: TBevel;
+    cbMinimize: TCheckBox;
     procedure edStreamKeyKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
     procedure cbYouTubeClick(Sender: TObject);
+    procedure cbMinimizeClick(Sender: TObject);
   private
   public
     constructor Create(AOwner: TComponent); override;
@@ -32,6 +35,11 @@ uses
 {$R *.dfm}
 
 { TfrSetup }
+
+procedure TfrSetup.cbMinimizeClick(Sender: TObject);
+begin
+  TOptions.Obj.MinimizeOnRecording := cbMinimize.Checked;
+end;
 
 procedure TfrSetup.cbYouTubeClick(Sender: TObject);
 begin

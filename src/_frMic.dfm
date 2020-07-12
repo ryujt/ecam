@@ -7,15 +7,15 @@ object frMic: TfrMic
   HelpKeyword = 'Mic'
   TabOrder = 0
   object Label1: TLabel
-    Left = 24
-    Top = 61
+    Left = 12
+    Top = 45
     Width = 58
     Height = 13
     Caption = #47560#51060#53356' '#49440#53469
   end
   object cbSystemAudio: TCheckBox
-    Left = 24
-    Top = 24
+    Left = 12
+    Top = 12
     Width = 185
     Height = 17
     Caption = '  '#49884#49828#53596' '#50724#46356#50724' '#52897#52432
@@ -23,9 +23,9 @@ object frMic: TfrMic
     OnClick = cbSystemAudioClick
   end
   object cbMic: TComboBox
-    Left = 24
-    Top = 76
-    Width = 257
+    Left = 12
+    Top = 60
+    Width = 285
     Height = 21
     TabOrder = 1
     Text = #44592#48376' '#51109#52824

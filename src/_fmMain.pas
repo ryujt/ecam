@@ -20,11 +20,13 @@ type
     btMic: TSwitchButton;
     btSetup: TSwitchButton;
     SaveDialog: TSaveDialog;
+    btMinimize: TBitmapButton;
     procedure btCloseClick(Sender: TObject);
     procedure btRecordChanged(Sender: TObject);
     procedure SwitchButtonbtClick(Sender: TObject);
     procedure btHomeClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure btMinimizeClick(Sender: TObject);
   private
     procedure do_close_ffmpeg;
   public
@@ -54,10 +56,15 @@ begin
   ShellExecuteFile('http://e-cam.s3-website.ap-northeast-2.amazonaws.com/', '', '')
 end;
 
+procedure TfmMain.btMinimizeClick(Sender: TObject);
+begin
+  Application.Minimize;
+end;
+
 procedure TfmMain.btRecordChanged(Sender: TObject);
 begin
-  TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
-
+  if btRecord.SwitchOn and  TOptions.Obj.MinimizeOnRecording then Application.Minimize;
+  
   if btRecord.SwitchOn then begin
     if TOptions.Obj.ScreenOption.CanCapture = false then begin
       MessageDlg('캡쳐할 윈도우가 선택되지 않았습니다.', mtError, [mbOK], 0);
@@ -68,13 +75,17 @@ begin
 
     if open_ffmpeg(TOptions.Obj.FFmpegControllerParams) = false then begin
       MessageDlg('녹화 준비 도중 에러가 발생하였습니다.', mtError, [mbOK], 0);
+      btRecord.SwitchOn := false;
       Exit;
     end;
 
+    // TODO: 에러 처리
     ShellExecuteHide(GetExecPath+'ffmpeg.exe', TOptions.Obj.FFmpegExecuteParams, GetExecPath);
   end else begin
     do_close_ffmpeg;
   end;
+
+  TCore.Obj.View.sp_OnAir(btRecord.SwitchOn);
 
   btMonitor.SwitchOn := false;
   btMic.SwitchOn     := false;

@@ -56,6 +56,7 @@ type
   private
     FRID : string;
     FVideoFilename : string;
+    FMinimizeOnRecording: boolean;
     function GetFFmpegExecuteParams: string;
     function GetFFmpegControllerParams: string;
   public
@@ -64,11 +65,14 @@ type
 
     class function Obj:TOptions;
 
+    procedure LoadFromFile;
     procedure SaveToFile;
   public
     ScreenOption : TScreenOption;
     AudioOption : TAudioOption;
     YouTubeOption : TYouTubeOption;
+
+    property MinimizeOnRecording : boolean read FMinimizeOnRecording write FMinimizeOnRecording;
 
     property VideoFilename : string read FVideoFilename;
 
@@ -207,6 +211,8 @@ constructor TOptions.Create;
 begin
   inherited;
 
+  FMinimizeOnRecording := false;
+
   FRID := RandomStr(16);
   FVideoFilename := RandomStr(16) + '.mp4';
 end;
@@ -244,6 +250,11 @@ begin
       [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, FVideoFilename]
     );
   end;
+end;
+
+procedure TOptions.LoadFromFile;
+begin
+  // TODO:
 end;
 
 initialization

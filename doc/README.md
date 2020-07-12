@@ -7,7 +7,7 @@ tagline: The easiest screen recording tool
 
 
 ## Release
-* [ecam.zip - ecam 0.1 beta prtable](/downloads/0.1-beta/ecam.zip)
+* [ecam.zip - ecam 0.1 beta portable](/downloads/0.1-beta/ecam.zip)
 * [ecam.exe - ecam 0.1 beta intaller](/downloads/0.1-beta/ecam.exe)
 
 
