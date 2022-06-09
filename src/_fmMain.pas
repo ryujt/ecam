@@ -3,7 +3,7 @@ unit _fmMain;
 interface
 
 uses
-  JsonData, Magnetic, Disk, FFmpegController,
+  JsonData, Magnetic, Disk, FFmpegController, ProcessUtils,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ExtCtrls, BitmapButton,
   Vcl.StdCtrls, BitmapWindow, SwitchButton;
@@ -21,13 +21,17 @@ type
     btSetup: TSwitchButton;
     SaveDialog: TSaveDialog;
     btMinimize: TBitmapButton;
+    Params: TMemo;
     procedure btCloseClick(Sender: TObject);
     procedure btRecordChanged(Sender: TObject);
     procedure SwitchButtonbtClick(Sender: TObject);
     procedure btHomeClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure btMinimizeClick(Sender: TObject);
+    procedure lbTitleMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Integer);
   private
+    FProcessList : TProcessList;
     procedure do_close_ffmpeg;
   public
     constructor Create(AOwner: TComponent); override;
@@ -42,7 +46,7 @@ var
 implementation
 
 uses
-  Core, Options;
+  Core, Options, DeviceList;
 
 {$R *.dfm}
 
@@ -66,18 +70,20 @@ begin
   if btRecord.SwitchOn and  TOptions.Obj.MinimizeOnRecording then Application.Minimize;
   
   if btRecord.SwitchOn then begin
-    if TOptions.Obj.ScreenOption.CanCapture = false then begin
-      MessageDlg('캡쳐할 윈도우가 선택되지 않았습니다.', mtError, [mbOK], 0);
-      btRecord.SwitchOn := false;
-      TCore.Obj.View.sp_ShowOptionControl('Monitor');
-      Exit;
-    end;
+//    if TOptions.Obj.ScreenOption.CanCapture = false then begin
+//      MessageDlg('캡쳐할 윈도우가 선택되지 않았습니다.', mtError, [mbOK], 0);
+//      btRecord.SwitchOn := false;
+//      TCore.Obj.View.sp_ShowOptionControl('Monitor');
+//      Exit;
+//    end;
+//
+//    if open_ffmpeg(TOptions.Obj.FFmpegControllerParams) = false then begin
+//      MessageDlg('녹화 준비 도중 에러가 발생하였습니다.', mtError, [mbOK], 0);
+//      btRecord.SwitchOn := false;
+//      Exit;
+//    end;
 
-    if open_ffmpeg(TOptions.Obj.FFmpegControllerParams) = false then begin
-      MessageDlg('녹화 준비 도중 에러가 발생하였습니다.', mtError, [mbOK], 0);
-      btRecord.SwitchOn := false;
-      Exit;
-    end;
+    Params.Text := TOptions.Obj.FFmpegExecuteParams;
 
     // TODO: 에러 처리
     ShellExecuteHide(GetExecPath+'ffmpeg.exe', TOptions.Obj.FFmpegExecuteParams, GetExecPath);
@@ -102,6 +108,8 @@ constructor TfmMain.Create(AOwner: TComponent);
 begin
   inherited;
 
+  FProcessList := TProcessList.Create;
+
   TCore.Obj.View.Add(Self);
 end;
 
@@ -109,11 +117,17 @@ destructor TfmMain.Destroy;
 begin
   TCore.Obj.View.Remove(Self);
 
+  FreeAndNil(FProcessList);
+
   inherited;
 end;
 
 procedure TfmMain.do_close_ffmpeg;
 begin
+  // TODO: 핸들로 죽이기
+  FProcessList.Update;
+  FProcessList.KillByName('ffmpeg.exe');
+
   close_ffmpeg;
   if TOptions.Obj.YouTubeOption.OnAir then Exit;
 
@@ -139,6 +153,13 @@ begin
   end;
 
   TOptions.Obj.SaveToFile;
+end;
+
+procedure TfmMain.lbTitleMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Integer);
+begin
+  ReleaseCapture;
+  Perform(WM_SysCommand, $F012, 0);
 end;
 
 procedure TfmMain.rp_ShowOptionControl(AParams: TJsonData);

@@ -1419,6 +1419,10 @@ object fmOptions: TfmOptions
         Align = alClient
         TabOrder = 2
         Visible = False
+        inherited cbYouTube: TCheckBox
+          Checked = True
+          State = cbChecked
+        end
       end
     end
   end

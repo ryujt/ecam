@@ -25,7 +25,9 @@ object frSetup: TfrSetup
     Top = 12
     Width = 185
     Height = 17
-    Caption = '  '#50976#53916#48652#47196' '#48169#49569#54616#44592
+    Caption = '  '#46972#51060#48652' '#48169#49569#54616#44592
+    Checked = True
+    State = cbChecked
     TabOrder = 0
     OnClick = cbYouTubeClick
   end

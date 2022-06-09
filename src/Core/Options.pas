@@ -82,6 +82,9 @@ type
 
 implementation
 
+uses
+  DeviceList;
+
 { TScreenOption }
 
 function TScreenOption.GetBitmapHeight: integer;
@@ -187,7 +190,7 @@ end;
 
 procedure TYouTubeOption.Init;
 begin
-  OnAir := false;
+  OnAir := true;
   StreamKey := '';
 end;
 
@@ -237,19 +240,10 @@ end;
 
 function TOptions.GetFFmpegExecuteParams: string;
 const
-  fmt_live : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s -f flv rtmp://a.rtmp.youtube.com/live2/%s';
+  fmt_live : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s -f flv %s/%s';
   fmt_file : string = '-framerate 20 -f rawvideo -pix_fmt rgb32 -video_size %dx%d -i \\.\pipe\video-%s -f f32le -acodec pcm_f32le -ar 44100 -ac 1 -i \\.\pipe\audio-%s "%s"';
 begin
-  if YouTubeOption.OnAir then begin
-    Result := Format(fmt_live,
-      [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, YouTubeOption.StreamKey]
-    );
-  end else begin
-    FVideoFilename := GetTempDirectory + RandomStr(16) + '.mp4';
-    Result := Format(fmt_file,
-      [ScreenOption.BitmapWidth, ScreenOption.BitmapHeight, FRID, FRID, FVideoFilename]
-    );
-  end;
+  Result := Format(IniString(GetExecPath+'Options.ini', 'Cam Streaming', 'params', ''), [TDeviceList.Obj.DefaultVideoId, TDeviceList.Obj.DefaultAudioId, YouTubeOption.StreamKey]);
 end;
 
 procedure TOptions.LoadFromFile;

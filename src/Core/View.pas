@@ -52,6 +52,12 @@ type
     procedure sp_OnAir(AValue:boolean);
 
     procedure sp_SetFullScreen;
+
+    /// 비디오와 오디오 장치 목록이 갱신 중
+    procedure sp_DeviceListUpdating;
+
+    /// 비디오와 오디오 장치 목록이 갱신됨
+    procedure sp_DeviceListUpdated(AVideoList,AAudioList:string);
 published
     /// 메시지 전송 중인 가?
     property Active : boolean read GetActive write SetActive;  
@@ -98,6 +104,34 @@ end;
 procedure TView.SetActive(const Value: boolean);
 begin
   FObserverList.Active := Value;
+end;
+
+procedure TView.sp_DeviceListUpdated(AVideoList,AAudioList: string);
+var
+  Params : TJsonData;
+begin
+  Params := TJsonData.Create;
+  try
+    Params.Values['Code'] := 'DeviceListUpdated';
+    Params.Values['VideoList'] := AVideoList;
+    Params.Values['AudioList'] := AAudioList;
+    FObserverList.AsyncBroadcast(Params);
+  finally
+    Params.Free;
+  end;
+end;
+
+procedure TView.sp_DeviceListUpdating;
+var
+  Params : TJsonData;
+begin
+  Params := TJsonData.Create;
+  try
+    Params.Values['Code'] := 'DeviceListUpdating';
+    FObserverList.AsyncBroadcast(Params);
+  finally
+    Params.Free;
+  end;
 end;
 
 procedure TView.sp_Finalize;

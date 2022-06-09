@@ -11,9 +11,9 @@ uses
 type
   TfrSetup = class(TFrame)
     Label1: TLabel;
+    Bevel1: TBevel;
     cbYouTube: TCheckBox;
     edStreamKey: TEdit;
-    Bevel1: TBevel;
     cbMinimize: TCheckBox;
     procedure edStreamKeyKeyUp(Sender: TObject; var Key: Word;
       Shift: TShiftState);
@@ -43,6 +43,7 @@ end;
 
 procedure TfrSetup.cbYouTubeClick(Sender: TObject);
 begin
+  cbYouTube.Checked := true;
   TOptions.Obj.YouTubeOption.OnAir := cbYouTube.Checked;
 end;
 

@@ -11,13 +11,14 @@ uses
   _frSetup in '_frSetup.pas' {frSetup: TFrame},
   _fmSelectRegion in '_fmSelectRegion.pas' {fmSelectRegion},
   _fmSelectWindow in '_fmSelectWindow.pas' {fmSelectWindow},
-  Options in 'Core\Options.pas';
+  Options in 'Core\Options.pas',
+  DeviceList in 'Core\DeviceList.pas';
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.Title := 'Easy Cam';
+  Application.Title := 'Berryful Live - Sender';
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TfmMain, fmMain);
   Application.CreateForm(TfmOptions, fmOptions);
